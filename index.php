@@ -1,48 +1,35 @@
 <?php
-$leftMenu = [
-  ['link'=>'Домой', 'href'=>'index.php'],
-  ['link'=>'О нас', 'href'=>'about.php'],
-  ['link'=>'Контакты', 'href'=>'contact.php'],
-  ['link'=>'Таблица умножения', 'href'=>'table.php'],
-  ['link'=>'Калькулятор', 'href'=>'calc.php']
-];
-// === Упражнение 4: Добавляем функцию drawMenu ===
-function drawMenu($menu, $vertical = true) {
-    $style = $vertical ? '' : 'style="display: flex; list-style: none; gap: 15px;"';
-    
-    echo "<ul {$style}>";
-    foreach ($menu as $item) {
-        echo "<li><a href='{$item['href']}'>{$item['link']}</a></li>";
-    }
-    echo "</ul>";
-}
-// === Упражнения 2 и 3: Установка даты и приветствия ===
-date_default_timezone_set('Asia/Almaty'); 
+require 'inc/lib.inc.php';
+require 'inc/data.inc.php';
 
-$day = date('d');
-$mon = date('m');
-$year = date('Y');
-
-$hour = (int) date('G');
-$welcome = '';
-
-if ($hour >= 0 && $hour < 6) {
-    $welcome = 'Доброй ночи';
-} elseif ($hour >= 6 && $hour < 12) {
-    $welcome = 'Доброе утро';
-} elseif ($hour >= 12 && $hour < 18) {
-    $welcome = 'Добрый день';
-} elseif ($hour >= 18 && $hour <= 23) {
-    $welcome = 'Добрый вечер';
-} else {
-    $welcome = 'Доброй ночи';
+// Упражнение 5: Инициализация заголовков страницы
+$title = 'Сайт нашей школы';
+$header = "$welcome, Гость!";
+$id = strtolower(strip_tags(trim($_GET['id'] ?? '')));
+switch ($id) {
+    case 'about':
+        $title = 'О сайте';
+        $header = 'О нашем сайте';
+        break;
+    case 'contact':
+        $title = 'Контакты';
+        $header = 'Обратная связь';
+        break;
+    case 'table':
+        $title = 'Таблица умножения';
+        $header = 'Таблица умножения';
+        break;
+    case 'calc':
+        $title = 'Он-лайн калькулятор';
+        $header = 'Калькулятор';
+        break;
 }
 ?>
 <!DOCTYPE html>
 <html>
 
 <head>
-  <title>Сайт нашей школы</title>
+  <title><?php echo $title ?></title>
   <meta charset="utf-8" />
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -51,14 +38,14 @@ if ($hour >= 0 && $hour < 6) {
 
   <div id="header">
     <!-- Верхняя часть страницы -->
-    <img src="logo.gif" width="187" height="29" alt="Наш логотип" class="logo" />
-    <span class="slogan">приходите к нам учиться</span>
+<?php include 'inc/top.inc.php'; ?>
     <!-- Верхняя часть страницы -->
   </div>
 
   <div id="content">
     <!-- Заголовок -->
-    <h1><?= $welcome ?>, Гость!</h1>
+    <h1><?php echo $header ?></h1>
+    <!-- Заголовок -->
 
     <!-- Вывод даты из Упражнения 2 -->
     <blockquote>
@@ -66,53 +53,37 @@ if ($hour >= 0 && $hour < 6) {
     </blockquote>
 
     <!-- Область основного контента -->
-    <h3>Зачем мы ходим в школу?</h3>
-    <p>
-      У нас каждую минуту что-то происходит и кипит жизнь. Проходят уроки и шумят перемены, кто-то отвечает у доски, кто-то отчаянно зубрит перед контрольной пройденный материал, кому-то ставят «пятерку» за сочинение, кого-то ругают за непрочитанную книгу, на школьной спортивной площадке ребята играют в футбол, а девочки – в волейбол, некоторые готовятся к соревнованиям, другие участвуют в репетициях праздников…
-    </p>
-    <h3>Что такое ЕГЭ?</h3>
-    <p>
-      Аббревиатура ЕГЭ расшифровывается как "Единый Государственный Экзамен". Почему "единый"? ЕГЭ одновременно является и вступительным экзаменом в ВУЗ и итоговой оценкой каждого выпускника школы. К тому же на всей территории России используются однотипные задания и единая система оценки.
-    </p>
-    <p>
-      Результаты ЕГЭ оцениваются по 100-балльной и пятибалльной системам и заносятся в свидетельство о результатах единого государственного экзамена. Срок действия данного документа истекает 31 декабря года, следующего за годом его выдачи, поэтому у абитуриентов есть возможность поступать в ВУЗы со свидетельством ЕГЭ в течение двух лет.
-    </p>
-    <!-- Область основного контента -->
-     <?php
-$val = trim(ini_get('post_max_size'));
-$last = strtolower($val[strlen($val) - 1]);
-$size = (int)$val;
-
-switch ($last) {
-    case 'g':
-        $size *= 1024 * 1024 * 1024;
+<?php
+switch ($id) {
+    case 'about':
+        include 'about.php';
         break;
-    case 'm':
-        $size *= 1024 * 1024;
+    case 'contact':
+        include 'contact.php';
         break;
-    case 'k':
-        $size *= 1024;
+    case 'table':
+        include 'table.php';
         break;
+    case 'calc':
+        include 'calc.php';
+        break;
+    default:
+        include 'inc/index.inc.php';
 }
 ?>
+    <!-- Область основного контента -->
+
   </div>
 
   <div id="nav">
     <!-- Навигация -->
-    <h2>Навигация по сайту</h2>
-
-    <!-- Упражнение 3: Вывод меню с помощью цикла foreach -->
-  <!-- Меню -->
-<?php
-    drawMenu($leftMenu, true);
-?>
-<!-- Меню -->
+<?php include 'inc/menu.inc.php'; ?>
     <!-- Навигация -->
   </div>
 
   <div id="footer">
     <!-- Нижняя часть страницы -->
-    &copy; Супер Мега Веб-мастер, <?php echo $year; ?>
+<?php include 'inc/bottom.inc.php'; ?>
     <!-- Нижняя часть страницы -->
   </div>
 
