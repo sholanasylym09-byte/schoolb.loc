@@ -1,5 +1,4 @@
 <?php
-// === Упражнение 3 (для Меню): Инициализация массива меню ===
 $leftMenu = [
   ['link'=>'Домой', 'href'=>'index.php'],
   ['link'=>'О нас', 'href'=>'about.php'],
@@ -7,7 +6,16 @@ $leftMenu = [
   ['link'=>'Таблица умножения', 'href'=>'table.php'],
   ['link'=>'Калькулятор', 'href'=>'calc.php']
 ];
-
+// === Упражнение 4: Добавляем функцию drawMenu ===
+function drawMenu($menu, $vertical = true) {
+    $style = $vertical ? '' : 'style="display: flex; list-style: none; gap: 15px;"';
+    
+    echo "<ul {$style}>";
+    foreach ($menu as $item) {
+        echo "<li><a href='{$item['href']}'>{$item['link']}</a></li>";
+    }
+    echo "</ul>";
+}
 // === Упражнения 2 и 3: Установка даты и приветствия ===
 date_default_timezone_set('Asia/Almaty'); 
 
@@ -94,13 +102,11 @@ switch ($last) {
     <h2>Навигация по сайту</h2>
 
     <!-- Упражнение 3: Вывод меню с помощью цикла foreach -->
-    <ul>
-      <?php
-        foreach ($leftMenu as $item) {
-            echo "<li><a href='{$item['href']}'>{$item['link']}</a></li>";
-        }
-      ?>
-    </ul>
+  <!-- Меню -->
+<?php
+    drawMenu($leftMenu, true);
+?>
+<!-- Меню -->
     <!-- Навигация -->
   </div>
 
